@@ -1,0 +1,60 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+ds=pd.read_csv(r'C:\Users\lenovo\OneDrive\Desktop\Python DA Project\Amazon Sale Report.csv')
+ds.shape
+ds.head(20)
+ds.tail()
+ds.drop(['New','PendingS'],axis=1,inplace=True)
+pd.isnull(ds).sum()  #to check null values
+ds.dropna(inplace=True) #to drop all null values
+ds.columns #to check all columns
+ds['ship-postal-code']=ds['ship-postal-code'].astype('int')
+ds.info()
+ds['ship-postal-code'].dtype
+ds.rename(columns={'Qty':'Quantity'}) #to rename a column
+ds[['Qty','Amount']].describe()
+a=sns.countplot(x='Size',data=ds)
+a=sns.countplot(x='Size',data=ds)
+for bars in a.containers:
+    a.bar_label(bars)
+ds.groupby(['Size'],as_index=False)['Qty'].sum().sort_values(by='Qty',ascending=False)
+s=ds.groupby(['Size'],as_index=False)['Qty'].sum().sort_values(by='Qty',ascending=False)
+
+a=sns.barplot(x='Size',y='Qty', data=s)
+
+for bars in a.containers:
+    a.bar_label(bars)
+sns.countplot(data=ds,x='Courier Status', hue='Status')
+ds['Size'].hist()
+ds['Category']=ds['Category'].astype(str)
+b=ds['Category']
+plt.figure(figsize=(10,5))
+plt.hist(b,bins=30,edgecolor='black')
+plt.xticks(rotation=45)
+plt.show()
+ds['Category']=ds['Category'].astype(str)
+b=ds['Category']
+sns.histplot(b, bins=50)
+plt.xticks(rotation=90)
+plt.show()
+c=ds['B2B'].value_counts()
+plt.figure(figsize=(4,4))
+plt.pie(c,labels=c.index,autopct='%1.1f%%')
+plt.show()
+x=ds['Category']
+y=ds['Size']
+sns.scatterplot(x=x,y=y)
+plt.title("Scatter Plot")
+plt.xlabel("Category")
+plt.ylabel("Size")
+plt.show()
+d=ds['ship-state'].value_counts().head(10)
+sns.countplot(x='ship-state',data=ds[ds['ship-state'].isin(d.index)])  
+plt.xlabel("ship-state")
+plt.ylabel("Count")
+plt.title("Distribuation of state")
+plt.xticks(rotation=45)
+plt.show()
